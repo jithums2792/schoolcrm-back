@@ -18,7 +18,7 @@ const io = require('socket.io')(http, {
 let clients = [];
 app.use('/', express.static('views'))
 
-app.use(cors( {origin: '*'}))
+app.use(cors( {origin: 'http://localhost:4200'}))
 
 
 let offer;
