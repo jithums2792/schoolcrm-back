@@ -1,10 +1,19 @@
 const express = require('express')
+const cors = require('cors')
 const path = require('path')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
+const coreoption = {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+  }
 let clients = [];
 app.use('/', express.static('views'))
+app.use(cors(coreoption))
+
 
 let offer;
 
