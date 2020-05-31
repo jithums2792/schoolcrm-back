@@ -1,20 +1,19 @@
 const express = require('express')
 const cors = require('cors')
-const path = require('path')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-io.origins((origin, callback) => {
-    if (origin !== 'https://localhost:4200') {
-      return callback('origin not allowed', false);
-    }
-    callback(null, true);
-  });
+// io.origins((origin, callback) => {
+//     if (origin !== 'https://localhost:4200') {
+//       return callback('origin not allowed', false);
+//     }
+//     callback(null, true);
+//   });
 
 let clients = [];
 app.use('/', express.static('views'))
 
-app.use(cors( {origin: 'http://localhost:4200'}))
+// app.use(cors( {origin: 'http://localhost:4200'}))
 
 
 let offer;
