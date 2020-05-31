@@ -3,15 +3,8 @@ const cors = require('cors')
 const path = require('path')
 const app = express()
 const http = require('http').Server(app)
-const io = require('socket.io')(http, {
-    handlePreflightRequest: (req, res) => {
-        const headers = {
-            "Access-Control-Allow-Origin": 'http://localhost:4200',
-        };
-        res.writeHead(200, headers);
-        res.end();
-    }
-});
+const io = require('socket.io')(http)
+io.set('origins', 'http://localhost:4200');
 
 let clients = [];
 app.use('/', express.static('views'))
