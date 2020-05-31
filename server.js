@@ -5,7 +5,7 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const coreoption = {
-    "origin": "*",
+    "origin": "http://localhost:4200",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "preflightContinue": false,
     "optionsSuccessStatus": 204
