@@ -4,10 +4,11 @@ const path = require('path')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
+io.set('origins', '*:*');
 let clients = [];
 app.use('/', express.static('views'))
 
-app.use(cors( {origin: 'http://localhost:4200'}))
+app.use(cors( {origin: '*'}))
 
 
 let offer;
