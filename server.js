@@ -42,9 +42,9 @@ io.on('connection', function (socket) {
     socket.emit('connection', 'connected to channel English')
 
     if (usertype == 'student') {
-        students.push(studentid)
+        students.push(socket.id)
         console.log(students)
-        socket.to('English').emit('newestudentjoined',studentid);
+        socket.to('English').emit('newestudentjoined',studentid,socket.id);
     } else {
         console.log("usertype is teacher")
     }
@@ -67,8 +67,9 @@ io.on('connection', function (socket) {
 
    socket.on('disconnect', () => {
        socket.leave('English')
-       console.log(studentid)
-       socket.to('English').emit('studentLeave', studentid)
+       const place = students.indexOf(socket.id)
+       students.splice(place, 1)
+       socket.to('English').emit('studentLeave', socket.id)
    })
 
 })
