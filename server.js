@@ -3,20 +3,19 @@ const cors = require('cors')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-// io.origins((origin, callback) => {
-//     if (origin !== 'https://localhost:4200') {
-//       return callback('origin not allowed', false);
-//     }
-//     callback(null, true);
-//   });
+const teacherRouter = require('./routers/teacher.router')
+const studentRouter = require('./routers/student.router')
+
 
 let clients = [];
 app.use('/', express.static('views'))
 
-// app.use(cors( {origin: 'http://localhost:4200'}))
 
+app.use('/api/teacher', teacherRouter)
+app.use('/api/student', studentRouter)
 
-let offer;
+let students= [];
+var studentid = null;
 
 var session = require("express-session")({
     secret: "my-secret",
@@ -36,13 +35,15 @@ io.use(sharedsession(session));
 io.on('connection', function (socket) {
 
     var usertype = socket.request._query['usertype'];
-    var studentid = socket.request._query['studentid'];
+    studentid = socket.request._query['studentid'];
 
 
     socket.join('English')
     socket.emit('connection', 'connected to channel English')
 
     if (usertype == 'student') {
+        students.push(studentid)
+        console.log(students)
         socket.to('English').emit('newestudentjoined',studentid);
     } else {
         console.log("usertype is teacher")
@@ -64,6 +65,11 @@ io.on('connection', function (socket) {
         socket.to('English').emit('answer', data)
     })
 
+   socket.on('disconnect', () => {
+       socket.leave('English')
+       console.log(studentid)
+       socket.to('English').emit('studentLeave', studentid)
+   })
+
 })
-app.use('/', express.static('views'))
 http.listen(3000, () => console.log('server is running'))
