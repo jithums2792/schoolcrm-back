@@ -3,17 +3,23 @@ const cors = require('cors')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
+require('./db/db')
 const teacherRouter = require('./routers/teacher.router')
 const studentRouter = require('./routers/student.router')
+const departmentRouter = require('./routers/department.router')
+const designationRouter = require('./routers/designation.router')
 
 
 let clients = [];
 app.use('/', express.static('views'))
+app.use(cors())
+app.use(express.json())
 
 
 app.use('/api/teacher', teacherRouter)
 app.use('/api/student', studentRouter)
-
+app.use('/api/department', departmentRouter)
+app.use('/api/designation', designationRouter)
 let students= [];
 var studentid = null;
 
