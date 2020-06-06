@@ -8,6 +8,7 @@ const teacherRouter = require('./routers/teacher.router')
 const studentRouter = require('./routers/student.router')
 const departmentRouter = require('./routers/department.router')
 const designationRouter = require('./routers/designation.router')
+const ClassRouter = require('./routers/class.router')
 
 
 let clients = [];
@@ -20,6 +21,8 @@ app.use('/api/teacher', teacherRouter)
 app.use('/api/student', studentRouter)
 app.use('/api/department', departmentRouter)
 app.use('/api/designation', designationRouter)
+app.use('/api/class', ClassRouter)
+
 let students= [];
 var studentid = null;
 
