@@ -9,12 +9,13 @@ const studentRouter = require('./routers/student.router')
 const departmentRouter = require('./routers/department.router')
 const designationRouter = require('./routers/designation.router')
 const ClassRouter = require('./routers/class.router')
+const fileRouter = require('./routers/file.router')
 
 
 let clients = [];
 app.use('/', express.static('views'))
 app.use(cors())
-app.use(express.json())
+app.use(express.json({limit: '100mb'}))
 
 
 app.use('/api/teacher', teacherRouter)
@@ -22,6 +23,7 @@ app.use('/api/student', studentRouter)
 app.use('/api/department', departmentRouter)
 app.use('/api/designation', designationRouter)
 app.use('/api/class', ClassRouter)
+app.use('/api/file', fileRouter)
 
 let students= [];
 var studentid = null;
