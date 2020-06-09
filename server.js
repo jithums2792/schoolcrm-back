@@ -25,7 +25,7 @@ app.use('/api/designation', designationRouter)
 app.use('/api/class', ClassRouter)
 app.use('/api/file', fileRouter)
 
-let students= [];
+let staffs= [];
 var studentid = null;
 
 var session = require("express-session")({
@@ -49,38 +49,50 @@ io.on('connection', function (socket) {
     studentid = socket.request._query['studentid'];
 
 
-    socket.join('English')
-    socket.emit('connection', 'connected to channel English')
-
-    if (usertype == 'student') {
-        students.push(socket.id)
-        console.log(students)
-        socket.to('English').emit('newestudentjoined',studentid,socket.id);
-    } else {
-        console.log("usertype is teacher")
-    }
+    // socket.join('English')
+    socket.emit('connection', 'connected')
+    socket.on('join',(room) => {
+        console.log(room)
+        socket.join(room)
+        socket.emit('join', room)
+        if (usertype == 'student') {
+            staffs.push({Uid: socket.id, room: room})
+            console.log(staffs)
+            socket.to(room).emit('newestudentjoined',studentid,socket.id);
+        } else {
+            console.log("usertype is teacher")
+            staffs.push({Uid: socket.id, room: room})
+            console.log(staffs)
+        }
+    })
+    
 
     socket.on('onicecandidateteacher', (data) => {
-        socket.to('English').emit('onicecandidateteacher', data)
+        socket.to(data.room).emit('onicecandidateteacher', data)
     })
 
     socket.on('onicecandidatestudent', (data) => {
-        socket.to('English').emit('onicecandidatestudent', data)
+        console.log('student room', data.room)
+        socket.to(data.room).emit('onicecandidatestudent', data)
     })
 
     socket.on('newoffer', (data) => {
-        socket.to('English').emit('newoffer', data)
+        console.log(data.room)
+        socket.to(data.room).emit('newoffer', data)
     })
 
     socket.on('answer', (data) => {
-        socket.to('English').emit('answer', data)
+        socket.to(data.room).emit('answer', data)
     })
 
    socket.on('disconnect', () => {
-       socket.leave('English')
-       const place = students.indexOf(socket.id)
-       students.splice(place, 1)
-       socket.to('English').emit('studentLeave', socket.id)
+      try {
+        const place = staffs.find(event => event.Uid === socket.id)
+        console.log(place);
+        socket.to(place.room).emit('studentLeave', socket.id)
+      } catch (error) {
+         console.log(socket.id) 
+      }
    })
 
 })
