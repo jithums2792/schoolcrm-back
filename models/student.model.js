@@ -36,7 +36,8 @@ const student = new schema({
     busboardingpoint: {type:String},
     username: {type:String},
     password: {type:String},
-    photo: {type: String}
+    photo: {type: String},
+    content: {type: Array}
 })
 const studentModel = mongoose.model('students', student)
 module.exports = studentModel

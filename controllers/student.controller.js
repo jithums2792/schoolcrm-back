@@ -44,7 +44,8 @@ function addStudent(req,res) {
         busboardingpoint: req.body.busboardingpoint,
         username: req.body.username,
         password: req.body.password,
-        photo: req.body.photo
+        photo: req.body.photo,
+        content: req.body.content
     })
     newStudent.save().then(data => dataHandler(res, data).catch(err => errorHandler(res, err)))
 }
