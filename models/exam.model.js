@@ -10,6 +10,7 @@ const exam = new schema({
    enddate: {type: String},
    totalmarks: {type: Number, required: true},
    questionlist: {type: Array, required: true},
+   active:{type: Boolean}
 })
 const exammodel = mongoose.model('exams', exam)
 module.exports = exammodel

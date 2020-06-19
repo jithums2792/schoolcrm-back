@@ -17,7 +17,8 @@ function addexam(req,res) {
         startdate: req.body.starttime,
         enddate: req.body.endtime,
         totalmarks: req.body.totalmark,
-        questionlist: req.body.questionlist
+        questionlist: req.body.questionlist,
+        active: req.body.active
     })
     newexam.save().then(data => dataHandler(res, data)).catch(err => errorHandler(res, err));
 }
