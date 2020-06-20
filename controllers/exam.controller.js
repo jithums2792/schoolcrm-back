@@ -23,6 +23,7 @@ function addexam(req,res) {
     newexam.save().then(data => dataHandler(res, data)).catch(err => errorHandler(res, err));
 }
 
+
 exports.getAllexam = getAllexam
 exports.getexamById = getexamById
 exports.updateexamById = updateexamById

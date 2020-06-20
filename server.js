@@ -12,6 +12,7 @@ const ClassRouter = require('./routers/class.router')
 const fileRouter = require('./routers/file.router')
 const examRouter = require('./routers/exam.router')
 const timetableRouter = require('./routers/timetable.router')
+const answerrouter = require('./routers/answer.route')
 
 
 let clients = [];
@@ -28,6 +29,7 @@ app.use('/api/class', ClassRouter)
 app.use('/api/file', fileRouter)
 app.use('/api/exam', examRouter)
 app.use('/api/timetable', timetableRouter)
+app.use('/api/answer', answerrouter)
 
 let staffs= [];
 var studentid = null;
