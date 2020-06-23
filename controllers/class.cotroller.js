@@ -11,6 +11,7 @@ function addClass(req,res) {
     let newClass = new ClassModel({
         name: req.body.name,
         section: req.body.section,
+        classteacher: req.body.classteacher,
         timetable: {key: 'value'}
     })
     console.log(newClass)
