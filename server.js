@@ -14,6 +14,7 @@ const examRouter = require('./routers/exam.router')
 const timetableRouter = require('./routers/timetable.router')
 const answerrouter = require('./routers/answer.route')
 const leaveRouter = require('./routers/leave.router')
+const chatRouter = require('./routers/chat.router')
 
 
 let clients = [];
@@ -32,6 +33,7 @@ app.use('/api/exam', examRouter)
 app.use('/api/timetable', timetableRouter)
 app.use('/api/answer', answerrouter)
 app.use('/api/leave', leaveRouter)
+app.use('/api/chat', chatRouter)
 
 let staffs= [];
 var studentid = null;
