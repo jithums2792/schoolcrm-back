@@ -16,6 +16,7 @@ const answerrouter = require('./routers/answer.route')
 const leaveRouter = require('./routers/leave.router')
 const chatRouter = require('./routers/chat.router')
 const noticeboardRouter = require('./routers/noticeboard.router')
+const dashboardRouter = require('./routers/dashboard.router')
 
 
 let clients = [];
@@ -36,6 +37,7 @@ app.use('/api/answer', answerrouter)
 app.use('/api/leave', leaveRouter)
 app.use('/api/chat', chatRouter)
 app.use('/api/noticeboard', noticeboardRouter)
+app.use('/api/dashboard', dashboardRouter)
 
 let staffs= [];
 var studentid = null;
@@ -108,4 +110,5 @@ io.on('connection', function (socket) {
    })
 
 })
+
 http.listen(3000, () => console.log('server is running'))
