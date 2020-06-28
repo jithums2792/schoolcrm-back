@@ -59,14 +59,21 @@ io.use(sharedsession(session));
 
 io.on('connection', function (socket) {
 
+    socket.on('chat', data => {
+        socket.join(data.room).emit('chat', 'joined in room')
+    })
+    socket.on('msg', data => {
+        socket.to(data.room).emit('msg', 'msg received')
+    })
+
     var usertype = socket.request._query['usertype'];
     studentid = socket.request._query['studentid'];
 
-
-    // socket.join('English')
     socket.emit('connection', 'connected')
+
+    
+
     socket.on('join',(room) => {
-        console.log(room)
         socket.join(room)
         socket.emit('join', room)
         if (usertype == 'student') {
@@ -79,6 +86,8 @@ io.on('connection', function (socket) {
             console.log(staffs)
         }
     })
+
+    
     
 
     socket.on('onicecandidateteacher', (data) => {
@@ -111,13 +120,5 @@ io.on('connection', function (socket) {
 
 })
 
-io.of('/chat', socket => {
-    socket.on('join', data => {
-        socket.join(data.room).emit('join', 'joined on chat')
-    })
-    socket.on('msg', data => {
-        socket.to(data.room).emit('msg','msg received')
-    })
-})
 
 http.listen(3000, () => console.log('server is running'))
