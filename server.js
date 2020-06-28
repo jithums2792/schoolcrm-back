@@ -111,4 +111,13 @@ io.on('connection', function (socket) {
 
 })
 
+io.of('/chat', socket => {
+    socket.on('join', data => {
+        socket.join(data.room).emit('join', 'joined on chat')
+    })
+    socket.on('msg', data => {
+        socket.to(data.room).emit('msg','msg received')
+    })
+})
+
 http.listen(3000, () => console.log('server is running'))
