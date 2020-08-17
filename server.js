@@ -78,12 +78,9 @@ io.on('connection', function (socket) {
         socket.emit('join', room)
         if (usertype == 'student') {
             staffs.push({Uid: socket.id, room: room})
-            console.log(staffs)
             socket.to(room).emit('newestudentjoined',studentid,socket.id);
         } else {
-            console.log("usertype is teacher")
             staffs.push({Uid: socket.id, room: room})
-            console.log(staffs)
         }
     })
 
@@ -95,12 +92,10 @@ io.on('connection', function (socket) {
     })
 
     socket.on('onicecandidatestudent', (data) => {
-        console.log('student room', data.room)
         socket.to(data.room).emit('onicecandidatestudent', data)
     })
 
     socket.on('newoffer', (data) => {
-        console.log(data.room)
         socket.to(data.room).emit('newoffer', data)
     })
 
@@ -108,10 +103,13 @@ io.on('connection', function (socket) {
         socket.to(data.room).emit('answer', data)
     })
 
+    socket.on('raise', (data) => {
+        socket.to(data.room).emit('raise', socket.id)
+    })
+
    socket.on('disconnect', () => {
       try {
         const place = staffs.find(event => event.Uid === socket.id)
-        console.log(place);
         socket.to(place.room).emit('studentLeave', socket.id)
       } catch (error) {
          console.log(socket.id) 
