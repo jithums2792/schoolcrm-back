@@ -4,6 +4,7 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 require('./db/db')
+require('dotenv').config()
 const teacherRouter = require('./routers/teacher.router')
 const studentRouter = require('./routers/student.router')
 const departmentRouter = require('./routers/department.router')
@@ -18,12 +19,14 @@ const leaveRouter = require('./routers/leave.router')
 const chatRouter = require('./routers/chat.router')
 const noticeboardRouter = require('./routers/noticeboard.router')
 const dashboardRouter = require('./routers/dashboard.router')
+const mediaroter = require('./routers/media.roter')
 
 
 let clients = [];
 app.use('/', express.static('views'))
 app.use(cors())
 app.use(express.json({limit: '100mb'}))
+app.use("/uploads", express.static("uploads"));
 
 
 app.use('/api/teacher', teacherRouter)
@@ -40,6 +43,7 @@ app.use('/api/leave', leaveRouter)
 app.use('/api/chat', chatRouter)
 app.use('/api/noticeboard', noticeboardRouter)
 app.use('/api/dashboard', dashboardRouter)
+app.use('/api/media', mediaroter)
 
 let staffs= [];
 var studentid = null;
