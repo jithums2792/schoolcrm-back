@@ -16,7 +16,7 @@ function deletefileById(req,res) {fileModel.findByIdAndDelete(req.params.id).the
 }).catch(err => errorHandler(res, err))}
 function addfile(req,res) {
     let data = JSON.parse(req.body.data)
-    Object.assign(data, {media: `http://localhost:3000/${req.file.path}`, path: req.file.path})
+    Object.assign(data, {media: `https:https://wmhmcclass.com/api/${req.file.path}`, path: req.file.path})
     let newfile = new fileModel(data)
     newfile.save().then(data => dataHandler(res, data)).catch(err => errorHandler(res, err));
 }
