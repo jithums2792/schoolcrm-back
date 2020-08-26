@@ -5,6 +5,8 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 require('./db/db')
 require('dotenv').config()
+
+
 const teacherRouter = require('./routers/teacher.router')
 const studentRouter = require('./routers/student.router')
 const departmentRouter = require('./routers/department.router')
@@ -15,11 +17,13 @@ const examRouter = require('./routers/exam.router')
 const subexamRouter = require('./routers/subsexam.router')
 const timetableRouter = require('./routers/timetable.router')
 const answerrouter = require('./routers/answer.route')
+const subanswerrouter = require('./routers/subanswer.router')
 const leaveRouter = require('./routers/leave.router')
 const chatRouter = require('./routers/chat.router')
 const noticeboardRouter = require('./routers/noticeboard.router')
 const dashboardRouter = require('./routers/dashboard.router')
 const mediaroter = require('./routers/media.roter')
+const attendanceRouter = require('./routers/attendance.router')
 
 
 let clients = [];
@@ -39,11 +43,13 @@ app.use('/api/exam', examRouter)
 app.use('/api/subexam', subexamRouter)
 app.use('/api/timetable', timetableRouter)
 app.use('/api/answer', answerrouter)
+app.use('/api/subanswer', subanswerrouter)
 app.use('/api/leave', leaveRouter)
 app.use('/api/chat', chatRouter)
 app.use('/api/noticeboard', noticeboardRouter)
 app.use('/api/dashboard', dashboardRouter)
 app.use('/api/media', mediaroter)
+app.use('/api/attendance', attendanceRouter)
 
 let staffs= [];
 var studentid = null;
