@@ -68,6 +68,8 @@ app.use(session);
 // setting autoSave:true
 io.use(sharedsession(session));
 
+let connectDb = []
+
 
 io.on('connection', function (socket) {
 
@@ -78,53 +80,33 @@ io.on('connection', function (socket) {
         socket.to(data.room).emit('msg', 'msg received')
     })
 
-    var usertype = socket.request._query['usertype'];
-    studentid = socket.request._query['studentid'];
 
     socket.emit('connection', 'connected')
 
     
 
-    socket.on('join',(room) => {
-        socket.join(room)
-        socket.emit('join', room)
-        if (usertype == 'student') {
-            staffs.push({Uid: socket.id, room: room})
-            socket.to(room).emit('newestudentjoined',studentid,socket.id);
+    socket.on('join',(data) => {
+        socket.join(data.room)
+        if (data.usertype == 'teacher') {
+            connectDb.push({Uid: socket.id, password: data.password, room: data.room, meetingID: data.meetingID})
+            socket.to(data.room).emit('live', {status:true, data: {Uid: socket.id, password: data.password, room: data.room, meetingID: data.meetingID}})
         } else {
-            staffs.push({Uid: socket.id, room: room})
+            let details = null
+            let session = connectDb.some(item => item.room === data.room)
+            if(session) {
+                details = connectDb.find(item => item.room === data.room)   
+            }
+            
+            socket.emit('joined', {status:session,data: details})
         }
     })
 
-    
-    
-
-    socket.on('onicecandidateteacher', (data) => {
-        socket.to(data.room).emit('onicecandidateteacher', data)
-    })
-
-    socket.on('onicecandidatestudent', (data) => {
-        socket.to(data.room).emit('onicecandidatestudent', data)
-    })
-
-    socket.on('newoffer', (data) => {
-        socket.to(data.room).emit('newoffer', data)
-    })
-
-    socket.on('answer', (data) => {
-        socket.to(data.room).emit('answer', data)
-    })
-
-    socket.on('raise', (data) => {
-        socket.to(data.room).emit('raise', socket.id)
-    })
-
    socket.on('disconnect', () => {
-      try {
-        const place = staffs.find(event => event.Uid === socket.id)
-        socket.to(place.room).emit('studentLeave', socket.id)
-      } catch (error) {
-         console.log(socket.id) 
+      if(connectDb.some(item => item.Uid === socket.id)) {
+          const i = connectDb.indexOf(item => item.Uid === socket.id)
+          connectDb.splice(i, 1)
+      } else {
+          return
       }
    })
 
