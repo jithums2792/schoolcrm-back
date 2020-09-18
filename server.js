@@ -88,26 +88,15 @@ io.on('connection', function (socket) {
     socket.on('join',(data) => {
         socket.join(data.room)
         if (data.usertype == 'teacher') {
-            connectDb.push({Uid: socket.id, password: data.password, room: data.room, meetingID: data.meetingID})
-            socket.to(data.room).emit('live', {status:true, data: {Uid: socket.id, password: data.password, room: data.room, meetingID: data.meetingID}})
+           
         } else {
-            let details = null
-            let session = connectDb.some(item => item.room === data.room)
-            if(session) {
-                details = connectDb.find(item => item.room === data.room)   
-            }
             
             socket.emit('joined', {status:session,data: details})
         }
     })
 
    socket.on('disconnect', () => {
-      if(connectDb.some(item => item.Uid === socket.id)) {
-          const i = connectDb.indexOf(item => item.Uid === socket.id)
-          connectDb.splice(i, 1)
-      } else {
-          return
-      }
+      
    })
 
 })
